@@ -1,6 +1,16 @@
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+mod renderer;
+
+use renderer::Renderer;
 
 fn main() {
-    vector_editor_lib::run()
+    let mut renderer = Renderer::new();
+    renderer.initialize();
+
+    if renderer.is_ready() {
+        println!("Renderer ready.");
+    }
+
+    tauri::Builder::default()
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }
